@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,27 +35,41 @@ public class UserService {
     public UserJoinResponseDto createUser(UserJoinRequestDto requestDto) {
 
         // 이메일 중복 확인
+        String email = requestDto.getEmail();
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new CustomException("이미 존재하는 이메일입니다.");
         }
 
         // 닉네임 중복 확인
+        Optional<User> checkUsername = userRepository.findByUserNickName(requestDto.getNickName());
         if (userRepository.existsByNickName(requestDto.getNickName())) {
             throw new CustomException("이미 존재하는 닉네임입니다.");
         }
 
-        // 사용자 정보 저장
-        User user = requestDto.toEntity();
-        String message;
+        // 비밀번호 인코딩
+        String password = passwordEncoder.encode(requestDto.getPassword());
 
         // 사용자 역할 설정
+        UserRoleEnum role;
+        String message;
         if (secretKey.equals(requestDto.getAdminKey())) {
-            user.setRole(UserRoleEnum.ADMIN);
+            role = UserRoleEnum.ADMIN;
             message = "성공적으로 관리자로 가입되었습니다";
         } else {
-            user.setRole(UserRoleEnum.USER);
+            role = UserRoleEnum.USER;
             message = "AdminKey 불일치로 사용자로 자동 가입되었습니다";
         }
+
+        // 사용자 등록
+        User user = User.builder()
+                .address(requestDto.getAddress())
+                .email(email)
+                .gender(requestDto.getGender())
+                .nickName(requestDto.getNickName())
+                .password(password) // 인코딩된 비밀번호 설정
+                .phoneNum(requestDto.getPhoneNum())
+                .role(role) // 역할 설정
+                .build();
 
         userRepository.save(user);
 
