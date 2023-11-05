@@ -68,7 +68,7 @@ public class UserService {
                 .nickName(requestDto.getNickName())
                 .password(password) // 인코딩된 비밀번호 설정
                 .phoneNum(requestDto.getPhoneNum())
-                .role(role) // 역할 설정
+                .role(role)
                 .build();
 
         userRepository.save(user);
@@ -79,6 +79,7 @@ public class UserService {
 
     // 로그인
     // 이메일 입력받아서 -> 사용자 조회 -> 비밀번호 검증 -> jwt 토큰 생성 -> 응답 반환
+    @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
 
         // 사용자 조회
