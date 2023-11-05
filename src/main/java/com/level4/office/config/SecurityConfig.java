@@ -3,13 +3,16 @@ package com.level4.office.config;
 import com.level4.office.jwt.JwtAuthenticationFilter;
 import com.level4.office.jwt.JwtAuthorizationFilter;
 import com.level4.office.jwt.JwtUtil;
-import com.level4.office.security.JwtAuthenticationEntryPoint;
 import com.level4.office.security.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,8 +20,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,7 +34,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -59,10 +66,7 @@ public class SecurityConfig {
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
-
-        // 인증 실패 시 JwtAuthenticationEntryPoint를 사용하도록 설정
-        http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-
+        // 접근 권한 설정
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()// resources 접근 허용 설정
@@ -70,9 +74,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/login").permitAll() // 로그인 허용
                         .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll() // 강의 조회 모두 가능
                         .requestMatchers(HttpMethod.GET, "/api/category/**").permitAll() // 카테고리 조회 모두 가능
-                        .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
-        );
-
+                        .anyRequest().authenticated());// 그 외 모든 요청 인증 처리
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

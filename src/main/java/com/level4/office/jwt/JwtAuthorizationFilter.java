@@ -33,13 +33,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String tokenValue = jwtUtil.getTokenFromRequest(req);
 
-//        // TODO 회원가입 및 기타 예외 경로
-//        String requestURI = req.getRequestURI();
-//        if ("/api/user/join".equals(requestURI)) {
-//            // 회원가입 경로면 필터를 건너뛰고 다음 필터로 넘어간다
-//            filterChain.doFilter(req, res);
-//            return;
-//        }
 
         if (StringUtils.hasText(tokenValue)) {
 

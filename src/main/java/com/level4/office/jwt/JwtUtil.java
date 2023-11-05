@@ -52,7 +52,7 @@ public class JwtUtil {
         log.info("토큰 생성 시작: 사용자 이름 - {}, 권한 - {}", email, role); // TODO log
 
         String token = Jwts.builder()
-                .setSubject(email) // 사용자 식별자값(ID)
+                .setSubject(email) // 사용자 식별자값(email)
                 .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                 .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
                 .setIssuedAt(date) // 발급일

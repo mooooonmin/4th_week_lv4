@@ -41,7 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // 비밀번호 검증
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+
             log.error("비밀번호 불일치: {}", requestDto.getEmail());
+
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
