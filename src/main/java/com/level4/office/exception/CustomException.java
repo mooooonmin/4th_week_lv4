@@ -1,6 +1,5 @@
 package com.level4.office.exception;
 
-
 // TODO 나중에는 인터페이스 구현으로 방식 바꾸기
 public class CustomException extends RuntimeException {
     public CustomException(String message) {
