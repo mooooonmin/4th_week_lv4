@@ -1,10 +1,9 @@
 package com.level4.office.entity;
 
-import com.level4.office.dto.UserJoinRequestDto;
+import com.level4.office.dto.join.UserJoinRequestDto;
+import com.level4.office.entity.enumType.GenderTypeEnum;
+import com.level4.office.entity.enumType.UserRoleEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,32 +21,32 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userid;
 
-    @NotBlank
-    @Email
     @Column(unique = true)
     private String email;
 
-    @NotBlank
-    @Size(min = 8, max = 15)
     private String password;
 
-    @NotBlank
     @Column(unique = true)
     private String nickName;
 
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-    @NotBlank
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private GenderTypeEnum gender;
 
-    @NotBlank
     private String phoneNum;
 
-    @NotBlank
     private String address;
 
     public User(UserJoinRequestDto requestDto) {
+        this.email = requestDto.getEmail();
+        this.password = requestDto.getPassword();
+        this.nickName = requestDto.getNickName();
+        this.address = requestDto.getAddress();
+        this.phoneNum = requestDto.getPhoneNum();
+        this.gender = requestDto.getGender();
+        this.role = requestDto.getRole() != null ? requestDto.getRole() : UserRoleEnum.USER;
     }
 
 }
