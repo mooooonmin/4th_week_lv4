@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-
     private final UserRepository userRepository;
 
     @Value("${admin.key}")
@@ -45,7 +44,7 @@ public class UserService {
             message = "성공적으로 관리자로 가입되었습니다";
         } else {
             user.setRole(UserRoleEnum.USER);
-            message = "AdminKey 불일치로 사용자료 자동 가입되었습니다";
+            message = "AdminKey 불일치로 사용자로 자동 가입되었습니다";
         }
 
         userRepository.save(user);

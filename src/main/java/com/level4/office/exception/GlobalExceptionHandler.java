@@ -12,19 +12,28 @@ public class GlobalExceptionHandler {
 
     // IllegalArgumentException
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        ErrorMessage errorMessage = ErrorMessage.INVALID_INPUT;
+        int status = HttpStatus.BAD_REQUEST.value();
+        return ResponseEntity.status(status)
+                .body(new ErrorResponse(errorMessage.getMessage(), status));
     }
 
     // NoSuchElementException
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
+        ErrorMessage errorMessage = ErrorMessage.USER_NOT_FOUND;
+        int status = HttpStatus.NOT_FOUND.value();
+        return ResponseEntity.status(status)
+                .body(new ErrorResponse(errorMessage.getMessage(), status));
     }
 
     // CustomException
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<String> handleCustomException(CustomException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        ErrorMessage errorMessage = ErrorMessage.USER_NOT_FOUND; // 예외 유형에 맞는 ErrorMessage 지정
+        int status = HttpStatus.NOT_FOUND.value();
+        return ResponseEntity.status(status)
+                .body(new ErrorResponse(errorMessage.getMessage(), status));
     }
 }

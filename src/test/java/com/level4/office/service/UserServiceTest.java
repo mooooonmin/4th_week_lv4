@@ -3,7 +3,6 @@ package com.level4.office.service;
 import com.level4.office.dto.join.UserJoinRequestDto;
 import com.level4.office.dto.join.UserJoinResponseDto;
 import com.level4.office.entity.enumType.GenderTypeEnum;
-import com.level4.office.entity.enumType.UserRoleEnum;
 import com.level4.office.exception.CustomException;
 import com.level4.office.repository.UserRepository;
 import org.junit.jupiter.api.Test;
