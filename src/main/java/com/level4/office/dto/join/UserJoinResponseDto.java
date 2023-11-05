@@ -14,12 +14,14 @@ public class UserJoinResponseDto {
     private GenderTypeEnum gender;
     private String address;
     private UserRoleEnum role;
+    private String message;
 
-    public UserJoinResponseDto(User user) {
+    public UserJoinResponseDto(User user, String message) {
         this.nickName = user.getNickName();
         this.email = user.getEmail();
         this.gender = user.getGender();
         this.address = user.getAddress();
         this.role = user.getRole();
+        this.message = message;
     }
 }
