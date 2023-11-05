@@ -1,5 +1,6 @@
 package com.level4.office.jwt;
 
+import com.level4.office.exception.CustomException;
 import com.level4.office.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,23 +32,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String tokenValue = jwtUtil.getTokenFromRequest(req);
 
-
         if (StringUtils.hasText(tokenValue)) {
 
             // 토큰의 유효성 검사
             if (!jwtUtil.validateToken(tokenValue)) {
-                return;
+                throw new CustomException.InvalidTokenException();
             }
 
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-            try {
-                setAuthentication(info.getSubject());
-            } catch (Exception e) {
-                log.error("Error setting authentication: {}", e.getMessage());
-                return;
-            }
+            setAuthentication(info.getSubject());
         }
+
         filterChain.doFilter(req, res);
     }
 

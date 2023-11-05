@@ -3,6 +3,7 @@ package com.level4.office.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.level4.office.dto.login.UserLoginRequestDto;
 import com.level4.office.entity.enumType.UserRoleEnum;
+import com.level4.office.exception.CustomException;
 import com.level4.office.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,15 +45,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             null
                     )
             );
-        } catch (IOException e) {
 
-            log.error("Error during authentication attempt: {}", e.getMessage());
+        } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
 
         } catch (AuthenticationException e) {
-
-            log.error("Authentication failed: {}", e.getMessage());
-            throw e;
+            throw new CustomException.InvalidPasswordException();
         }
     }
 
