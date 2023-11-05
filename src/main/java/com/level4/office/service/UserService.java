@@ -7,6 +7,7 @@ import com.level4.office.dto.login.UserLoginResponseDto;
 import com.level4.office.entity.User;
 import com.level4.office.entity.enumType.UserRoleEnum;
 import com.level4.office.exception.CustomException;
+import com.level4.office.exception.ErrorMessage;
 import com.level4.office.jwt.JwtUtil;
 import com.level4.office.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +38,12 @@ public class UserService {
         // 이메일 중복 확인
         String email = requestDto.getEmail();
         if (userRepository.existsByEmail(requestDto.getEmail())) {
-            throw new CustomException("이미 존재하는 이메일입니다.");
+            throw new CustomException(ErrorMessage.ALREADY_EXISTS.getMessage());
         }
 
         // 닉네임 중복 확인
-        Optional<User> checkUsername = userRepository.findByUserNickName(requestDto.getNickName());
         if (userRepository.existsByNickName(requestDto.getNickName())) {
-            throw new CustomException("이미 존재하는 닉네임입니다.");
+            throw new CustomException(ErrorMessage.ALREADY_EXISTS.getMessage());
         }
 
         // 비밀번호 인코딩
