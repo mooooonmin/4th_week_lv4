@@ -25,8 +25,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    @Value("${admin.key}")
-    private String adminKey;
+    @Value("${jwt.secret.key}")
+    private String secretKey;
 
     // 회원가입
     @Transactional
@@ -47,7 +47,7 @@ public class UserService {
         String message;
 
         // 사용자 역할 설정
-        if (adminKey.equals(requestDto.getAdminKey())) {
+        if (secretKey.equals(requestDto.getAdminKey())) {
             user.setRole(UserRoleEnum.ADMIN);
             message = "성공적으로 관리자로 가입되었습니다";
         } else {
