@@ -1,13 +1,13 @@
 package com.level4.office.security;
 
-import com.level4.office.entity.enumType.UserRoleEnum;
+import com.level4.office.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
@@ -16,32 +16,38 @@ public class UserDetailsImpl implements UserDetails {
 
     private final User user;
 
-    public User getUser() { //// 유저엔티티 반환
+    public User getUser() {
         return user;
     }
 
     @Override
-    public String getPassword() { // 비밀번호 반환
+    public String getPassword() {
         return user.getPassword();
     }
 
     @Override
-    public String getUsername() { // TODO 변경점 이메일 반환
+    public String getUsername() { // 이메일 반환
         return user.getEmail();
     }
 
     // 사용자에게 부여된 권한 정보를 GrantedAuthority 형태로 반환
     // 여기서는 UserRoleEnum의 getAuthority() 사용해 권한을 가져옴
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        UserRoleEnum role = user.getRole();
+//        String authority = role.getAuthority();
+//
+//        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
+//        Collection<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(simpleGrantedAuthority);
+//
+//        return authorities;
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = user.getRole();
-        String authority = role.getAuthority();
-
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(simpleGrantedAuthority);
-
-        return authorities;
+        String authority = user.getRole().getAuthority();
+        return Collections.singletonList(new SimpleGrantedAuthority(authority));
     }
 
     // 여기 아래부븐은 계정의 활성상태를 확인해줌
