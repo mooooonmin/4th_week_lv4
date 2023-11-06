@@ -1,8 +1,10 @@
 package com.level4.office.service;
 
+import com.level4.office.dto.course.CourseResponseDto;
 import com.level4.office.dto.instructor.InstructorRequestDto;
 import com.level4.office.dto.instructor.InstructorResponseDto;
 import com.level4.office.entity.Instructor;
+import com.level4.office.exception.ErrorMessage;
 import com.level4.office.repository.CourseRepository;
 import com.level4.office.repository.InstructorRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,49 +30,23 @@ public class InstructorService {
         return new InstructorResponseDto(instructor);
     }
 
-    // 선택한 강사 정보 조회 TODO 이름으로 찾기로 변경
-    @Transactional(readOnly = true)
-    public InstructorResponseDto getInstructorById(Long id) {
-        Instructor instructor = instructorRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
-        return new InstructorResponseDto(instructor);
-    }
-
-    // 선택 강사 수정 TODO 이름으로 찾기로 변경
-    @Transactional
-    public void updateInstructor(Long id, InstructorRequestDto requestDto) {
-        // 강사 정보 찾고 수정 - 강사 아이디로 찾기
-        Instructor instructor = instructorRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
-
-        instructor.update(requestDto);
-    }
-
-    // 선택 강사 삭제 TODO 이름으로 찾기로 변경하기
-    @Transactional
-    public void deleteInstructor(Long id) {
-        // 강사 정보가 있는지 확인
-        if (!instructorRepository.existsById(id)) {
-            throw new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다");
-        }
-        // 강사 정보 삭제
-        instructorRepository.deleteById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public InstructorResponseDto getInstructorByName(String name) {
-        Instructor instructor = instructorRepository.findByName(name)
-                .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
-        return buildInstructorResponseDto(instructor);
-    }
-
+    // 모든 강사 조회 (강의 정보 반화 X)
     @Transactional(readOnly = true)
     public List<InstructorResponseDto> getAllInstructors() {
         List<Instructor> instructors = instructorRepository.findAll();
         return instructors.stream()
-                .map(this::buildInstructorResponseDto)
+                .map(InstructorResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    // 강사 단일 조회 -> 강사의 강의까지 조회
+    @Transactional(readOnly = true)
+    public InstructorResponseDto getInstructorByName(String name) {
+        return instructorRepository.findByName(name)
+                .map(this::buildInstructorResponseDto)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage()));
+    }
+
 
     private InstructorResponseDto buildInstructorResponseDto(Instructor instructor) {
         List<CourseResponseDto> courses = courseRepository.findByInstructorNameOrderByRegDateDesc(instructor.getName())
@@ -81,5 +57,25 @@ public class InstructorService {
         InstructorResponseDto responseDto = new InstructorResponseDto(instructor);
         responseDto.setCourses(courses);
         return responseDto;
+    }
+
+    // 선택 강사 수정
+    @Transactional
+    public void updateInstructor(InstructorRequestDto requestDto, String name) {
+        Instructor instructor = instructorRepository.findByName(name)
+                .orElseThrow(() -> new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage()));
+
+        instructor.update(requestDto);
+    }
+
+    // 강사 삭제 TODO 강사삭제시 강사의 강의 모두삭제
+    @Transactional
+    public void deleteInstructor(String name) {
+        // 강사의 이름으로 존재하는지 확인 후
+        if (!instructorRepository.existsByName(name)) {
+            throw new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage());
+        }
+        // 강사 정보 삭제
+        instructorRepository.deleteByName(name);
     }
 }
