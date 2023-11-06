@@ -15,9 +15,10 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    @Query("SELECT c FROM Course c WHERE c.instructor.instructorName = :instructorName")
-    List<Course> findCoursesByInstructorName(@Param("instructorName") String instructorName);
-    // 조건 정성
+    @Query("SELECT c FROM Course c WHERE c.instructorName = :instructorName")
+    List<Course> findByInstructorName(@Param("instructorName") String instructorName);
+
+
     Page<Course> findAll(Pageable pageable);
 
     void deleteByInstructorName(String name);
@@ -26,8 +27,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     boolean existsById(Long id);
 
     List<Course> findByCategory(CategoryTypeEnum category, Sort sort);
-
-    // 강사 이름으로 강의를 찾기
-    List<Course> findByInstructorName(String instructorName);
 
 }

@@ -3,7 +3,6 @@ package com.level4.office.service;
 import com.level4.office.dto.course.CourseRequestDto;
 import com.level4.office.dto.course.CourseResponseDto;
 import com.level4.office.entity.Course;
-import com.level4.office.entity.Instructor;
 import com.level4.office.entity.enumType.CategoryTypeEnum;
 import com.level4.office.exception.CustomException;
 import com.level4.office.repository.CourseRepository;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,8 +39,8 @@ public class CourseService {
 
     // 강의 등록
     @Transactional
-    public CourseResponseDto createCourse(CourseRequestDto requestDto, Instructor instructor) {
-        Course course = new Course(requestDto, instructor);
+    public CourseResponseDto createCourse(CourseRequestDto requestDto) {
+        Course course = new Course(requestDto);
         courseRepository.save(course);
         return new CourseResponseDto(course);
     }

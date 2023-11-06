@@ -37,12 +37,16 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private CategoryTypeEnum category;
 
+    @Column(name = "instructor_name")
+    private String instructorName;
+
 
     public Course(CourseRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.price = requestDto.getPrice();
         this.courseInfo = requestDto.getCourseInfo();
         this.category = requestDto.getCategory();
+        this.instructorName = requestDto.getInstructorName(); // 강사 이름 설정
     }
 
     public void update(CourseRequestDto requestDto) {

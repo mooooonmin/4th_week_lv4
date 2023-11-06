@@ -1,12 +1,9 @@
 package com.level4.office.dto.course;
 
 import com.level4.office.entity.Course;
-import com.level4.office.entity.Instructor;
 import com.level4.office.entity.enumType.CategoryTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
