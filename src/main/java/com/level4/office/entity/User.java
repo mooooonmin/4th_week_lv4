@@ -6,6 +6,9 @@ import com.level4.office.entity.enumType.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -36,6 +39,9 @@ public class User {
     private String phoneNum;
 
     private String address;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
 
     public User(UserJoinRequestDto requestDto) {
         this.email = requestDto.getEmail();
