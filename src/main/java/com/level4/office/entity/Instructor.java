@@ -32,9 +32,9 @@ public class Instructor {
     @Column(name = "info", nullable = false)
     private String info;
 
-    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // 강사가없는 강의는 자동삭제
+    @JoinColumn(name = "instructor_id") // fk 지정
     private List<Course> courses = new ArrayList<>();
-
 
     public Instructor(InstructorRequestDto requestDto) {
         this.instructorName = requestDto.getInstructorName();

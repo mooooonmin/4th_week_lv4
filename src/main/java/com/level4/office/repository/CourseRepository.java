@@ -15,10 +15,12 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    @Query("SELECT c FROM Course c WHERE c.instructor.name = :instructorName")
+    @Query("SELECT c FROM Course c WHERE c.instructor.instructorName = :instructorName")
     List<Course> findCoursesByInstructorName(@Param("instructorName") String instructorName);
     // 조건 정성
     Page<Course> findAll(Pageable pageable);
+
+    void deleteByInstructorName(String name);
 
 
     boolean existsById(Long id);

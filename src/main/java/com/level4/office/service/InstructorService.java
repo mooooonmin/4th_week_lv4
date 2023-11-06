@@ -48,19 +48,19 @@ public class InstructorService {
     }
 
     private InstructorResponseDto buildInstructorResponseDto(Instructor instructor) {
-        List<CourseResponseDto> course = courseRepository.findByInstructorName(instructor.getInstructorName())
+        List<CourseResponseDto> courseDtos = courseRepository.findByInstructorName(instructor.getInstructorName())
                 .stream()
-                .map(course -> new CourseResponseDto(
-                        course.getCourseId(),
-                        course.getTitle(),
-                        course.getPrice(),
-                        course.getCategory()
+                .map(courseEntity -> new CourseResponseDto(
+                        courseEntity.getCourseId(),
+                        courseEntity.getTitle(),
+                        courseEntity.getPrice(),
+                        courseEntity.getCategory()
                         // 강사 이름을 제외하고 객체를 생성합니다.
                 ))
                 .collect(Collectors.toList());
 
         InstructorResponseDto responseDto = new InstructorResponseDto(instructor);
-        responseDto.setCourses(course); // 강사 DTO에 강의 목록을 설정합니다.
+        responseDto.setCourses(courseDtos); // 강사 DTO에 강의 목록을 설정합니다.
         return responseDto;
     }
 
@@ -73,13 +73,17 @@ public class InstructorService {
         instructor.update(requestDto);
     }
 
-    // 강사 삭제
+    // 강사 삭제 -> 단방향 설정이라 강의 직접삭제 부분을 추가해줘야함
     @Transactional
     public void deleteInstructor(String name) {
         // 강사의 이름으로 존재하는지 확인 후
         if (!instructorRepository.existsByName(name)) {
             throw new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage());
         }
+
+        // 연관된 강의들을 먼저 삭제
+        courseRepository.deleteByInstructorName(name);
+
         // 강사 정보 삭제
         instructorRepository.deleteByName(name);
     }
