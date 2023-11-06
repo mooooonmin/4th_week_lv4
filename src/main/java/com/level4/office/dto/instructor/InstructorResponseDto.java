@@ -1,5 +1,6 @@
 package com.level4.office.dto.instructor;
 
+import com.level4.office.dto.course.CourseResponseDto;
 import com.level4.office.entity.Instructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ public class InstructorResponseDto {
     private String company;
     private String phoneNum;
     private String info;
-    private List<InstructorResponseDto> courses; // 강의 목록
+    private List<CourseResponseDto> courses; // 강의 목록
 
     public InstructorResponseDto(Instructor instructor) {
         this.instructorId = instructor.getInstructorId();
@@ -24,5 +25,9 @@ public class InstructorResponseDto {
         this.company = instructor.getCompany();
         this.phoneNum = instructor.getPhoneNum();
         this.info = instructor.getInfo();
+    }
+
+    public void setCourses(List<CourseResponseDto> courses) {
+        this.courses = courses;
     }
 }

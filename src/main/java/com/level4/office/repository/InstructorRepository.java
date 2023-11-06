@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface InstructorRepository extends JpaRepository<Instructor, Long> {
 
-    Optional<Instructor> findByName(String name);
-    boolean existsByName(String name);
-    void deleteByName(String name);
+    Optional<Instructor> findByInstructorName(String instructorName);
+    boolean existsByInstructorName(String instructorName);
+    void deleteByInstructorName(String instructorName);
 }

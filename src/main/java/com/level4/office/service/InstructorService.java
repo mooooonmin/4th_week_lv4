@@ -41,8 +41,8 @@ public class InstructorService {
 
     // 강사 단일 조회 -> 강사의 강의까지 같이 조회
     @Transactional(readOnly = true)
-    public InstructorResponseDto getInstructorByName(String name) {
-        return instructorRepository.findByName(name)
+    public InstructorResponseDto getInstructorByName(String instructorName) {
+        return instructorRepository.findByInstructorName(instructorName)
                 .map(this::buildInstructorResponseDto)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage()));
     }
@@ -54,20 +54,24 @@ public class InstructorService {
                         courseEntity.getCourseId(),
                         courseEntity.getTitle(),
                         courseEntity.getPrice(),
-                        courseEntity.getCategory()
+                        courseEntity.getCategory(),
+                        courseEntity.getCourseInfo()
                         // 강사 이름을 제외하고 객체를 생성합니다.
                 ))
                 .collect(Collectors.toList());
 
+        // 강사 정보를 담은 dto 생성
         InstructorResponseDto responseDto = new InstructorResponseDto(instructor);
-        responseDto.setCourses(courseDtos); // 강사 DTO에 강의 목록을 설정합니다.
+
+        // 강의 목록 설정
+        responseDto.setCourses(courseDtos);
         return responseDto;
     }
 
     // 선택 강사 수정
     @Transactional
-    public void updateInstructor(InstructorRequestDto requestDto, String name) {
-        Instructor instructor = instructorRepository.findByName(name)
+    public void updateInstructor(InstructorRequestDto requestDto, String instructorName) {
+        Instructor instructor = instructorRepository.findByInstructorName(instructorName)
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage()));
 
         instructor.update(requestDto);
@@ -75,16 +79,16 @@ public class InstructorService {
 
     // 강사 삭제 -> 단방향 설정이라 강의 직접삭제 부분을 추가해줘야함
     @Transactional
-    public void deleteInstructor(String name) {
+    public void deleteInstructor(String instructorName) {
         // 강사의 이름으로 존재하는지 확인 후
-        if (!instructorRepository.existsByName(name)) {
+        if (!instructorRepository.existsByInstructorName(instructorName)) {
             throw new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage());
         }
 
         // 연관된 강의들을 먼저 삭제
-        courseRepository.deleteByInstructorName(name);
+        courseRepository.deleteByInstructorName(instructorName);
 
         // 강사 정보 삭제
-        instructorRepository.deleteByName(name);
+        instructorRepository.deleteByInstructorName(instructorName);
     }
 }

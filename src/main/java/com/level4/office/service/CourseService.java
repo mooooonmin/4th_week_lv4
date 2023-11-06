@@ -72,7 +72,8 @@ public class CourseService {
                         course.getCourseId(),
                         course.getTitle(),
                         course.getPrice(),
-                        course.getCategory()
+                        course.getCategory(),
+                        course.getCourseInfo()
                         // 강사 정보는 여기서 제외
                 ))
                 .collect(Collectors.toList());

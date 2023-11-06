@@ -23,10 +23,11 @@ public class CourseResponseDto {
     }
 
     // 강사 이름을 제외하고 생성자를 오버로드합니다.
-    public CourseResponseDto(Long courseId, String title, int price, CategoryTypeEnum category) {
+    public CourseResponseDto(Long courseId, String title, int price, CategoryTypeEnum category, String courseInfo) {
         this.courseId = courseId;
         this.title = title;
         this.price = price;
         this.category = category;
+        this.courseInfo = courseInfo;
     }
 }
