@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InstructorRequestDto {
-    private String name;
+    private String instructorName;
     private String career;
     private String company;
     private String phoneNum;

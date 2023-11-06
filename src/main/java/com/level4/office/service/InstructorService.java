@@ -39,7 +39,7 @@ public class InstructorService {
                 .collect(Collectors.toList());
     }
 
-    // 강사 단일 조회 -> 강사의 강의까지 조회
+    // 강사 단일 조회 -> 강사의 강의까지 같이 조회
     @Transactional(readOnly = true)
     public InstructorResponseDto getInstructorByName(String name) {
         return instructorRepository.findByName(name)
@@ -47,15 +47,20 @@ public class InstructorService {
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.DATA_NOT_FOUND.getMessage()));
     }
 
-
     private InstructorResponseDto buildInstructorResponseDto(Instructor instructor) {
-        List<CourseResponseDto> courses = courseRepository.findByInstructorNameOrderByRegDateDesc(instructor.getName())
+        List<CourseResponseDto> course = courseRepository.findByInstructorName(instructor.getInstructorName())
                 .stream()
-                .map(CourseResponseDto::new)
+                .map(course -> new CourseResponseDto(
+                        course.getCourseId(),
+                        course.getTitle(),
+                        course.getPrice(),
+                        course.getCategory()
+                        // 강사 이름을 제외하고 객체를 생성합니다.
+                ))
                 .collect(Collectors.toList());
 
         InstructorResponseDto responseDto = new InstructorResponseDto(instructor);
-        responseDto.setCourses(courses);
+        responseDto.setCourses(course); // 강사 DTO에 강의 목록을 설정합니다.
         return responseDto;
     }
 

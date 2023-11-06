@@ -40,4 +40,11 @@ public class CustomException extends RuntimeException {
             super(ErrorMessage.TOKEN_EXPIRED.getMessage());
         }
     }
+
+    // 강의 없음
+    public static class CourseNotFoundException extends CustomException {
+        public CourseNotFoundException() {
+            super(ErrorMessage.DATA_NOT_FOUND.getMessage());
+        }
+    }
 }

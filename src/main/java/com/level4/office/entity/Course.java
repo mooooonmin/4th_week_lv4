@@ -37,6 +37,9 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private CategoryTypeEnum category;
 
+    @Column(name = "instructor_name")
+    private String instructorName;
+
 
     public Course(CourseRequestDto requestDto) {
         this.title = requestDto.getTitle();

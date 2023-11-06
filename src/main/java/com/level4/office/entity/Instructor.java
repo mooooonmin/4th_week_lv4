@@ -17,8 +17,8 @@ public class Instructor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long instructorId;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "instructor_name", nullable = false, unique = true)
+    private String instructorName;
 
     @Column(name = "career", nullable = false)
     private String career;
@@ -37,7 +37,7 @@ public class Instructor {
 
 
     public Instructor(InstructorRequestDto requestDto) {
-        this.name = requestDto.getName();
+        this.instructorName = requestDto.getInstructorName();
         this.career = requestDto.getCareer();
         this.company = requestDto.getCompany();
         this.phoneNum = requestDto.getPhoneNum();
@@ -45,7 +45,7 @@ public class Instructor {
     }
 
     public void update(InstructorRequestDto requestDto) {
-        this.name = requestDto.getName();
+        this.instructorName = requestDto.getInstructorName();
         this.career = requestDto.getCareer();
         this.company = requestDto.getCompany();
         this.phoneNum = requestDto.getPhoneNum();

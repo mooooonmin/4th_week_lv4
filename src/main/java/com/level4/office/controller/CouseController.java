@@ -3,6 +3,7 @@ package com.level4.office.controller;
 import com.level4.office.dto.course.CourseRequestDto;
 import com.level4.office.dto.course.CourseResponseDto;
 import com.level4.office.service.CourseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class CouseController {
 
     private final CourseService courseService;
@@ -23,7 +27,6 @@ public class CouseController {
     }
 
     // 강의 조회
-    @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
     @GetMapping("/course/{id}")
     public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable Long id) {
         CourseResponseDto course = courseService.getCourseById(id);
@@ -38,7 +41,8 @@ public class CouseController {
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
-    @Secured("ROLE_MANAGER")
+    // 선택 강의 수정
+    @Secured("ROLE_ADMIN")
     @PutMapping("/course/{id}")
     public ResponseEntity<?> updateCourse(@PathVariable Long id,
                                           @RequestBody CourseRequestDto requestDto) {
@@ -50,7 +54,8 @@ public class CouseController {
         }
     }
 
-    @Secured("ROLE_MANAGER")
+    // 선택 강의 삭제
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/course/{id}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
         try {
