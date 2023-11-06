@@ -68,7 +68,7 @@ public class InstructorService {
         instructor.update(requestDto);
     }
 
-    // 강사 삭제 TODO 강사삭제시 강사의 강의 모두삭제
+    // 강사 삭제
     @Transactional
     public void deleteInstructor(String name) {
         // 강사의 이름으로 존재하는지 확인 후

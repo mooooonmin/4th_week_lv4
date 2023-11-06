@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Table(name = "instructor")
 @Entity
@@ -28,6 +31,10 @@ public class Instructor {
 
     @Column(name = "info", nullable = false)
     private String info;
+
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Course> courses = new ArrayList<>();
+
 
     public Instructor(InstructorRequestDto requestDto) {
         this.name = requestDto.getName();

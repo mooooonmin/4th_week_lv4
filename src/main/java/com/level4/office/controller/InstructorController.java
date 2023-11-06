@@ -18,7 +18,6 @@ public class InstructorController {
 
     private final InstructorService instructorService;
 
-
     // 강사 등록
     @Secured("ROLE_ADMIN")
     @PostMapping("/instructor")
@@ -49,7 +48,7 @@ public class InstructorController {
     public ResponseEntity<String> updateInstructor(@PathVariable String name,
                                                    @RequestBody InstructorRequestDto requestDto) {
         instructorService.updateInstructor(requestDto, name);
-        return ResponseEntity.ok("강사 정보가 성공적으로 수정되었습니다.");
+        return ResponseEntity.ok("강사 정보가 수정되었습니다.");
     }
 
     // 강사 삭제
