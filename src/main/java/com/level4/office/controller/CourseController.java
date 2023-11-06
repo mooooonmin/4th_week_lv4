@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class CouseController {
+public class CourseController {
 
     private final CourseService courseService;
 
@@ -27,14 +27,15 @@ public class CouseController {
     }
 
     // 강의 조회
-    @GetMapping("/course/{id}")
-    public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable Long id) {
-        CourseResponseDto course = courseService.getCourseById(id);
+    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
+    @GetMapping("/course/{title}")
+    public ResponseEntity<CourseResponseDto> getCourseByTitle(@PathVariable String title) {
+        CourseResponseDto course = courseService.getCourseByTitle(title);
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-    // 강의의 강의까지 조회
-    @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
+    // 강사의 강의까지 조회
+    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
     @GetMapping("/courses")
     public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
         List<CourseResponseDto> courses = courseService.getAllCourses();
@@ -43,12 +44,12 @@ public class CouseController {
 
     // 선택 강의 수정
     @Secured("ROLE_ADMIN")
-    @PutMapping("/course/{id}")
-    public ResponseEntity<?> updateCourse(@PathVariable Long id,
+    @PutMapping("/course/{title}")
+    public ResponseEntity<?> updateCourse(@PathVariable String title,
                                           @RequestBody CourseRequestDto requestDto) {
         try {
-            courseService.updateCourse(id, requestDto);
-            return ResponseEntity.ok("강의 정보가 성공적으로 수정되었습니다");
+            courseService.updateCourse(title, requestDto);
+            return ResponseEntity.ok("강의 정보가 성공적으로 수정되었습니다.");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -56,10 +57,10 @@ public class CouseController {
 
     // 선택 강의 삭제
     @Secured("ROLE_ADMIN")
-    @DeleteMapping("/course/{id}")
-    public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
+    @DeleteMapping("/course/{title}")
+    public ResponseEntity<?> deleteCourse(@PathVariable String title) {
         try {
-            courseService.deleteCourse(id);
+            courseService.deleteCourse(title);
             return ResponseEntity.ok().body("강의 정보가 삭제되었습니다.");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CourseRequestDto {
+
     private String title;
     private int price;
     private String courseInfo;

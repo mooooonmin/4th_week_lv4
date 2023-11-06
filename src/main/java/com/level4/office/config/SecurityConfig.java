@@ -72,7 +72,13 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()// resources 접근 허용 설정
                         .requestMatchers("/api/users/join").permitAll() // 회원가입 허용
                         .requestMatchers("/api/users/login").permitAll() // 로그인 허용
-                        .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll() // 강의 조회 모두 가능
+                        // 강의 단일, 전체 조회 모두 가능
+                        .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/course/**").permitAll()
+                        // 강사 단일, 전체 조회 모두 가능
+                        .requestMatchers(HttpMethod.GET, "/api/instructor/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/instructors/**").permitAll()
+                        // 카테고리 조회 가능
                         .requestMatchers(HttpMethod.GET, "/api/category/**").permitAll() // 카테고리 조회 모두 가능
                         .anyRequest().authenticated());// 그 외 모든 요청 인증 처리
         // 필터 관리

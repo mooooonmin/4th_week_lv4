@@ -26,36 +26,39 @@ public class InstructorController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    // 강사 조회
-    @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
-    @GetMapping("/instructor/{id}")
-    public ResponseEntity<InstructorResponseDto> getInstructorById(@PathVariable String name) {
-        InstructorResponseDto instructor = instructorService.getInstructorByName(name);
-        return new ResponseEntity<>(instructor, HttpStatus.OK);
-    }
+
+    // TODO 되는데 왜 get 권한이 필요하지?
 
     // 모든 강사 조회
-    @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
+    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
     @GetMapping("/instructors")
     public ResponseEntity<List<InstructorResponseDto>> getAllInstructors() {
         List<InstructorResponseDto> instructors = instructorService.getAllInstructors();
         return new ResponseEntity<>(instructors, HttpStatus.OK);
     }
 
+    // 강사 조회
+    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
+    @GetMapping("/instructor/{instructorName}")
+    public ResponseEntity<InstructorResponseDto> getInstructorByName(@PathVariable String instructorName) {
+        InstructorResponseDto instructor = instructorService.getInstructorByName(instructorName);
+        return new ResponseEntity<>(instructor, HttpStatus.OK);
+    }
+
     // 강사 수정
     @Secured("ROLE_ADMIN")
-    @PatchMapping("/instructor/{id}")
-    public ResponseEntity<String> updateInstructor(@PathVariable String name,
+    @PatchMapping("/instructor/{instructorName}")
+    public ResponseEntity<String> updateInstructor(@PathVariable String instructorName,
                                                    @RequestBody InstructorRequestDto requestDto) {
-        instructorService.updateInstructor(requestDto, name);
+        instructorService.updateInstructor(requestDto, instructorName);
         return ResponseEntity.ok("강사 정보가 수정되었습니다.");
     }
 
     // 강사 삭제
     @Secured("ROLE_ADMIN")
-    @DeleteMapping("/instructor/{id}")
-    public ResponseEntity<String> deleteInstructor(@PathVariable String name) {
-        instructorService.deleteInstructor(name);
+    @DeleteMapping("/instructor/{instructorName}")
+    public ResponseEntity<String> deleteInstructor(@PathVariable String instructorName) {
+        instructorService.deleteInstructor(instructorName);
         return ResponseEntity.ok().body("강사 정보가 삭제되었습니다.");
     }
 }

@@ -47,9 +47,9 @@ public class CourseService {
 
     // 선택 강의 조회
     @Transactional(readOnly = true)
-    public CourseResponseDto getCourseById(Long id) {
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new CustomException.CourseNotFoundException());
+    public CourseResponseDto getCourseByTitle(String title) {
+        Course course = courseRepository.findByTitle(title)
+                .orElseThrow(CustomException.CourseNotFoundException::new);
         return new CourseResponseDto(course);
     }
 
@@ -82,20 +82,20 @@ public class CourseService {
 
     // 선택 강의 수정
     @Transactional
-    public void updateCourse(Long id, CourseRequestDto requestDto) {
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new CustomException.CourseNotFoundException());
+    public void updateCourse(String title, CourseRequestDto requestDto) {
+        Course course = courseRepository.findByTitle(title)
+                .orElseThrow(CustomException.CourseNotFoundException::new);
         course.update(requestDto);
         //courseRepository.save(course);
     }
 
     // 선택 강의 삭제
     @Transactional
-    public void deleteCourse(Long id) {
-        if(!courseRepository.existsById(id)) {
+    public void deleteCourse(String title) {
+        if(!courseRepository.existsByTitle(title)) {
             throw new CustomException.CourseNotFoundException();
         }
-        courseRepository.deleteById(id);
+        courseRepository.deleteByTitle(title);
     }
 
 }
