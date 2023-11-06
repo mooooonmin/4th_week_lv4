@@ -47,4 +47,17 @@ public class CustomException extends RuntimeException {
             super(ErrorMessage.DATA_NOT_FOUND.getMessage());
         }
     }
+
+    // 댓글 못찾음
+    public static class CommentNotFoundException extends CustomException {
+        public CommentNotFoundException() {
+            super(ErrorMessage.DATA_NOT_FOUND.getMessage());
+        }
+    }
+
+    public static class UnauthorizedActionException extends CustomException {
+        public UnauthorizedActionException(String message) {
+            super(ErrorMessage.FORBIDDEN.getMessage());
+        }
+    }
 }

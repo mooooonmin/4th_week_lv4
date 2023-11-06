@@ -7,24 +7,44 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/courses/{courseId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
+    // 강의에 대한 댓글 등록
     @PostMapping
-    @PreAuthorize("hasAuthority('USER')") // 'USER' 권한을 가진 사용자만 댓글을 달 수 있음
-    public ResponseEntity<CommentResponseDto> addComment(@RequestBody CommentRequestDto commentRequestDto) {
-        CommentResponseDto commentResponse = commentService.addComment(commentRequestDto);
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<CommentResponseDto> addComment(
+            @PathVariable Long courseId,
+            @RequestBody CommentRequestDto commentRequestDto) {
+        CommentResponseDto commentResponse = commentService.addComment(courseId, commentRequestDto);
         return new ResponseEntity<>(commentResponse, HttpStatus.CREATED);
+    }
+
+    // 강의에 대한 댓글 수정
+    @PutMapping("/{commentId}")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<CommentResponseDto> updateComment(
+            @PathVariable Long courseId,
+            @PathVariable Long commentId,
+            @RequestBody CommentRequestDto commentRequestDto) {
+        CommentResponseDto updatedComment = commentService.updateComment(courseId, commentId, commentRequestDto);
+        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
+    }
+
+    // 강의에 대한 댓글 삭제
+    @DeleteMapping("/{commentId}")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<?> deleteComment(
+            @PathVariable Long courseId,
+            @PathVariable Long commentId) {
+        commentService.deleteComment(courseId, commentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

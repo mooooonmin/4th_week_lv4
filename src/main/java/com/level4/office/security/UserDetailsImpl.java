@@ -30,6 +30,10 @@ public class UserDetailsImpl implements UserDetails {
         return user.getEmail();
     }
 
+    public Long getUserId() {
+        return user.getUserId();
+    }
+
     // 사용자에게 부여된 권한 정보를 GrantedAuthority 형태로 반환
     // 여기서는 UserRoleEnum의 getAuthority() 사용해 권한을 가져옴
 //    @Override

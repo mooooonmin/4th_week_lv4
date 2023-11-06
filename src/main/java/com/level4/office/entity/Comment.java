@@ -4,6 +4,7 @@ import com.level4.office.dto.comment.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
@@ -32,7 +33,10 @@ public class Comment {
 
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate; // 댓글 단 시각
+
+    @UpdateTimestamp
+    private LocalDateTime updatedDate; // 댓글 수정 시각
 
     public Comment(CommentRequestDto requestDto, User user, Course course) {
         this.content = requestDto.getContent();

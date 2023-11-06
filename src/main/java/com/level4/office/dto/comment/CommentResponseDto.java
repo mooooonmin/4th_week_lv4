@@ -18,7 +18,7 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment) {
         this.courseTitle = comment.getCourse().getTitle();
-        this.userId = comment.getUser().getUserid();
+        this.userId = comment.getUser().getUserId();
         this.content = comment.getContent();
         this.createdDate = comment.getCreatedDate();
     }
