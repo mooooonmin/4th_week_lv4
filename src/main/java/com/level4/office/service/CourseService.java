@@ -26,7 +26,7 @@ public class CourseService {
     public List<CourseResponseDto> getCourses(String sortField, String sortOrder) {
         // 정렬 조건 생성
         Sort sort = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        PageRequest pageable = PageRequest.of(0, 10, sort);
+        PageRequest pageable = PageRequest.of(0, 3, sort); // 3개 반환
 
         // 쿼리 실행
         Page<Course> coursesPage = courseRepository.findAll(pageable);

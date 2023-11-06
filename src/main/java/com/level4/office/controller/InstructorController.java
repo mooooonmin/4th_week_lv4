@@ -37,7 +37,7 @@ public class InstructorController {
         return new ResponseEntity<>(instructors, HttpStatus.OK);
     }
 
-    // 강사 조회
+    // 강사 조회 TODO 강의 등록하고 강사 조회시 강의수 null 뜨는거 확인
     @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
     @GetMapping("/instructor/{instructorName}")
     public ResponseEntity<InstructorResponseDto> getInstructorByName(@PathVariable String instructorName) {

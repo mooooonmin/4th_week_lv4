@@ -2,8 +2,10 @@ package com.level4.office.controller;
 
 import com.level4.office.dto.course.CourseRequestDto;
 import com.level4.office.dto.course.CourseResponseDto;
+import com.level4.office.entity.enumType.CategoryTypeEnum;
 import com.level4.office.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -11,12 +13,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.level4.office.jwt.JwtUtil.logger;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class CourseController {
 
     private final CourseService courseService;
+
 
     // 강의 등록
     @Secured("ROLE_ADMIN")
@@ -65,5 +71,24 @@ public class CourseController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // 강의 카테고리별 조회
+    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
+    @GetMapping("/courses/{category}")
+    public ResponseEntity<List<CourseResponseDto>> getCoursesByCategory(
+            @RequestParam("category") String category,
+            @RequestParam(value = "sortField", defaultValue = "title") String sortField,
+            @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
+
+        CategoryTypeEnum categoryType;
+        try {
+            categoryType = CategoryTypeEnum.valueOf(category.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<CourseResponseDto> courses = courseService.getCoursesByCategory(categoryType, sortField, sortOrder);
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 }

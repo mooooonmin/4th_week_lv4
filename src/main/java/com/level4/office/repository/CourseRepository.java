@@ -35,4 +35,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findByCategory(CategoryTypeEnum category, Sort sort);
 
+    //Page<Course> findByCategory(CategoryTypeEnum category, Pageable pageable);
+
 }
