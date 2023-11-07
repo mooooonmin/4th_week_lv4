@@ -43,7 +43,7 @@ public class Course {
     @Column(name = "instructor_name")
     private String instructorName;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
     public Course(CourseRequestDto requestDto) {

@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<UserJoinResponseDto> createUser(@RequestBody UserJoinRequestDto requestDto) {
+    public ResponseEntity<UserJoinResponseDto> createUser(@Valid @RequestBody UserJoinRequestDto requestDto) {
         UserJoinResponseDto responseDto = userService.createUser(requestDto);
         return ResponseEntity.ok(responseDto);
     }

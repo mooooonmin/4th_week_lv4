@@ -18,7 +18,6 @@ import static com.level4.office.jwt.JwtUtil.logger;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Slf4j
 public class CourseController {
 
     private final CourseService courseService;
@@ -75,7 +74,7 @@ public class CourseController {
 
     // 강의 카테고리별 조회
     @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
-    @GetMapping("/courses/{category}")
+    @GetMapping("/courses/category/{category}")
     public ResponseEntity<List<CourseResponseDto>> getCoursesByCategory(
             @RequestParam("category") String category,
             @RequestParam(value = "sortField", defaultValue = "title") String sortField,
@@ -88,7 +87,10 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        List<CourseResponseDto> courses = courseService.getCoursesByCategory(categoryType, sortField, sortOrder);
+        List<CourseResponseDto> courses = courseService.getCoursesByCategory(
+                categoryType,
+                sortField,
+                sortOrder);
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 }

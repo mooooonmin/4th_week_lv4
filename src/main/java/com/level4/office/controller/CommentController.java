@@ -33,7 +33,10 @@ public class CommentController {
             @PathVariable Long courseId,
             @PathVariable Long commentId,
             @RequestBody CommentRequestDto commentRequestDto) {
-        CommentResponseDto updatedComment = commentService.updateComment(courseId, commentId, commentRequestDto);
+        CommentResponseDto updatedComment = commentService.updateComment(
+                courseId,
+                commentId,
+                commentRequestDto);
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
@@ -46,5 +49,4 @@ public class CommentController {
         commentService.deleteComment(courseId, commentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }
