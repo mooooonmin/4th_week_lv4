@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +25,8 @@ public class CommentService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
-    // 댓글 등록
+    // 댓글 등록 (대댓글 기능 포함)
+    @Transactional
     public CommentResponseDto addComment(Long courseId, CommentRequestDto commentRequestDto) {
         // 사용자 ID를 인증 정보에서 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -39,10 +41,18 @@ public class CommentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(CustomException.UserNotFoundException::new);
 
-        // 댓글 엔티티를 생성
+        // 대댓글인 경우 부모 댓글 찾기
+        Comment parentComment = null;
+        if (commentRequestDto.getParentId() != null) {
+            parentComment = commentRepository.findById(commentRequestDto.getParentId())
+                    .orElseThrow(() -> new CustomException(ErrorMessage.DATA_NOT_FOUND.getMessage()));
+        }
+
+        // 댓글 엔티티를 생성하면서 대댓글인 경우 부모 설정
         Comment comment = Comment.builder()
                 .course(course)
                 .user(user)
+                .parent(parentComment) // 대댓글인 경우 부모 설정
                 .content(commentRequestDto.getContent())
                 .build();
 
@@ -53,6 +63,7 @@ public class CommentService {
         return new CommentResponseDto(savedComment);
     }
 
+    @Transactional
     // 댓글 수정
     public CommentResponseDto updateComment(Long courseId, Long commentId, CommentRequestDto commentRequestDto) {
         // 인증 객체를 가져오기
@@ -84,6 +95,7 @@ public class CommentService {
 
 
     // 댓글 삭제
+    @Transactional
     public void deleteComment(Long courseId, Long commentId) {
         // 인증 객체를 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

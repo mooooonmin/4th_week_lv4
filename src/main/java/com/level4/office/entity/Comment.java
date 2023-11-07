@@ -31,11 +31,14 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
+    // TODO 자기참조 확인하기
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private Comment parent;
+    private Comment parent; // 부모댓글
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
     private String content;
@@ -47,9 +50,19 @@ public class Comment {
     @UpdateTimestamp
     private LocalDateTime updatedDate; // 댓글 수정 시각
 
-    public Comment(CommentRequestDto requestDto, User user, Course course) {
+    public Comment(CommentRequestDto requestDto, User user, Course course, Comment parent) {
         this.content = requestDto.getContent();
         this.user = user;
         this.course = course;
+        this.parent = parent;
     }
+
+    // 자식 댓글 초기화
+    public List<Comment> getChildren() {
+        if (this.children == null) {
+            this.children = new ArrayList<>();
+        }
+        return this.children;
+    }
+
 }
