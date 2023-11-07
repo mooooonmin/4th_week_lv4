@@ -1,5 +1,6 @@
 package com.level4.office.dto.course;
 
+import com.level4.office.entity.Like;
 import com.level4.office.dto.comment.CommentResponseDto;
 import com.level4.office.entity.Course;
 import com.level4.office.entity.enumType.CategoryTypeEnum;

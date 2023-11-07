@@ -76,7 +76,7 @@ public class CourseService {
         CourseResponseDto responseDto = new CourseResponseDto(course);
 
         // 좋아요 수 추가
-        long likesCount = likeRepository.countByCourseAndLikedTrue(course);
+        long likesCount = likeRepository.countByCourseAndIsLikedTrue(course);
         responseDto.setLikesCount(likesCount);
 
         return responseDto;
@@ -96,7 +96,7 @@ public class CourseService {
                             course.getCourseInfo(),
                             course.getLikesCount()
                     );
-                    long likesCount = likeRepository.countByCourseAndLikedTrue(course);
+                    long likesCount = likeRepository.countByCourseAndIsLikedTrue(course);
                     dto.setLikesCount(likesCount);
                     return dto;
                 })
