@@ -21,6 +21,7 @@ public class CourseResponseDto {
     private String courseInfo;
     private CategoryTypeEnum category;
     private List<CommentResponseDto> comments; // 댓글
+    private long likesCount; // 좋아요 수
 
     public CourseResponseDto(Course course) {
         this.courseId = course.getCourseId();
@@ -31,14 +32,22 @@ public class CourseResponseDto {
         this.comments = course.getComments().stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
+        this.likesCount = course.getLikes().stream().filter(Like::isLiked).count(); // 좋아요 수 계산하여 초기화
     }
 
+
     // 강사 이름을 제외
-    public CourseResponseDto(Long courseId, String title, int price, CategoryTypeEnum category, String courseInfo) {
+    public CourseResponseDto(Long courseId,
+                             String title,
+                             int price,
+                             CategoryTypeEnum category,
+                             String courseInfo,
+                             long likesCount) {
         this.courseId = courseId;
         this.title = title;
         this.price = price;
         this.category = category;
         this.courseInfo = courseInfo;
+        this.likesCount = likesCount;
     }
 }

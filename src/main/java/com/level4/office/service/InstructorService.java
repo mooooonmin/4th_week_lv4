@@ -55,8 +55,9 @@ public class InstructorService {
                         courseEntity.getTitle(),
                         courseEntity.getPrice(),
                         courseEntity.getCategory(),
-                        courseEntity.getCourseInfo()
-                        // 강사 이름을 제외하고 객체를 생성합니다.
+                        courseEntity.getCourseInfo(),
+                        courseEntity.getLikesCount()
+                        // 강사 이름을 제외하고 객체를 생성
                 ))
                 .collect(Collectors.toList());
 
