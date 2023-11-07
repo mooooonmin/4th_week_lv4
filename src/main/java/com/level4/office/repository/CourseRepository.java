@@ -20,21 +20,23 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT c FROM Course c WHERE c.instructorName = :instructorName")
     List<Course> findByInstructorName(@Param("instructorName") String instructorName);
 
+    @Modifying
+    @Query("DELETE FROM Course c WHERE c.title = :title")
+    void deleteByTitle(String title);
+
     Page<Course> findAll(Pageable pageable);
 
     // 강사 이름 기준으로 삭제
     void deleteByInstructorName(String name);
 
+    // 강의명으로 찾기
     Optional<Course> findByTitle(String title);
+
+    //List<Course> findByCategory(CategoryTypeEnum category, Sort sort);
 
     boolean existsByTitle(String title);
 
-    @Modifying
-    @Query("DELETE FROM Course c WHERE c.title = :title")
-    void deleteByTitle(String title);
-
-    List<Course> findByCategory(CategoryTypeEnum category, Sort sort);
-
-    //Page<Course> findByCategory(CategoryTypeEnum category, Pageable pageable);
+    // 페이지네이션
+    Page<Course> findByCategory(CategoryTypeEnum category, Pageable pageable);
 
 }

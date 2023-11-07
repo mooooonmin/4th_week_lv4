@@ -10,6 +10,7 @@ import com.level4.office.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,19 +72,24 @@ public class CourseService {
     }
 
     // 강의 카테고리 조회 - 댓글 제외
+    // TODO 페이지네이션 학습하기
     @Transactional(readOnly = true)
-    public List<CourseResponseDto> getCoursesByCategory(CategoryTypeEnum category, String sortField, String sortOrder) {
-        Sort sort = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        List<Course> courses = courseRepository.findByCategory(category, sort);
-        return courses.stream()
-                .map(course -> new CourseResponseDto(
-                        course.getCourseId(),
-                        course.getTitle(),
-                        course.getPrice(),
-                        course.getCategory(),
-                        course.getCourseInfo() // 댓글 제외 생성자 사용
-                ))
-                .collect(Collectors.toList());
+    public Page<CourseResponseDto> getCoursesByCategory(
+            CategoryTypeEnum category,
+            int page,
+            int size,
+            String sortField,
+            String sortOrder) {
+
+        // PageRequest 생성을 통한 페이징 처리
+        Sort.Direction direction = Sort.Direction.fromString(sortOrder);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortField));
+
+        // 카테고리와 페이징 정보를 기반으로 강의 조회
+        Page<Course> coursesPage = courseRepository.findByCategory(category, pageable);
+
+        // DTO 변환 후 반환
+        return coursesPage.map(CourseResponseDto::new);
     }
 
 
@@ -93,7 +99,6 @@ public class CourseService {
         Course course = courseRepository.findByTitle(title)
                 .orElseThrow(CustomException.CourseNotFoundException::new);
         course.update(requestDto);
-        //courseRepository.save(course);
     }
 
     // 선택 강의 삭제

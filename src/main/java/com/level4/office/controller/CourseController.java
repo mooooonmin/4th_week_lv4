@@ -3,17 +3,16 @@ package com.level4.office.controller;
 import com.level4.office.dto.course.CourseRequestDto;
 import com.level4.office.dto.course.CourseResponseDto;
 import com.level4.office.entity.enumType.CategoryTypeEnum;
+import com.level4.office.exception.ErrorMessage;
 import com.level4.office.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.level4.office.jwt.JwtUtil.logger;
 
 @RestController
 @RequestMapping("/api")
@@ -75,22 +74,27 @@ public class CourseController {
     // 강의 카테고리별 조회
     @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
     @GetMapping("/courses/category/{category}")
-    public ResponseEntity<List<CourseResponseDto>> getCoursesByCategory(
-            @RequestParam("category") String category,
+    public ResponseEntity<?> getCoursesByCategory(
+            @PathVariable("category") String category,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size,
             @RequestParam(value = "sortField", defaultValue = "title") String sortField,
             @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
 
         CategoryTypeEnum categoryType;
         try {
-            categoryType = CategoryTypeEnum.valueOf(category.toUpperCase());
+            categoryType = CategoryTypeEnum.valueOf(category.toUpperCase()); // 카테고리 대소문자 구분없이 받기
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(ErrorMessage.BAD_REQUEST.getMessage());
         }
 
-        List<CourseResponseDto> courses = courseService.getCoursesByCategory(
+        Page<CourseResponseDto> coursesPage = courseService.getCoursesByCategory(
                 categoryType,
+                page,
+                size,
                 sortField,
                 sortOrder);
-        return new ResponseEntity<>(courses, HttpStatus.OK);
+
+        return new ResponseEntity<>(coursesPage, HttpStatus.OK);
     }
 }
