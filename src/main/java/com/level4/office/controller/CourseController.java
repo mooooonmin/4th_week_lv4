@@ -78,7 +78,7 @@ public class CourseController {
     public ResponseEntity<?> getCoursesByCategory(
             @PathVariable("category") String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sortField", defaultValue = "title") String sortField,
             @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder) {
 

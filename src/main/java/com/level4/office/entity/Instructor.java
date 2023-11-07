@@ -26,6 +26,7 @@ public class Instructor {
     @Column(name = "company", nullable = false)
     private String company;
 
+
     @Column(name = "phone_num", nullable = false)
     private String phoneNum;
 

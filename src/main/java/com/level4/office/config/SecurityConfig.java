@@ -81,8 +81,6 @@ public class SecurityConfig {
                         // 강사 단일, 전체 조회 모두 가능
                         .requestMatchers(HttpMethod.GET, "/api/instructor/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/instructors/**").permitAll()
-                        // 카테고리 조회 가능
-                        .requestMatchers(HttpMethod.GET, "/api/category/**").permitAll()
                         // 그 외 모든 요청 인증 처리
                         .anyRequest().authenticated());
 
