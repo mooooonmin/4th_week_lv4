@@ -12,6 +12,7 @@ import com.level4.office.repository.CourseRepository;
 import com.level4.office.repository.UserRepository;
 import com.level4.office.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -28,6 +30,7 @@ public class CommentService {
     // 댓글 등록 (대댓글 기능 포함)
     @Transactional
     public CommentResponseDto addComment(Long courseId, CommentRequestDto commentRequestDto) {
+
         // 사용자 ID를 인증 정보에서 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
