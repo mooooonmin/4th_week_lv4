@@ -71,7 +71,7 @@ public class CourseController {
         }
     }
 
-    // 강의 카테고리별 조회정
+    // 강의 카테고리별 조회
     // 페이지네이션 방법 -> 정확하게 어떻게 보여지는지 아직 모르겠음
     @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_GUEST"})
     @GetMapping("/courses/category/{category}")

@@ -55,9 +55,9 @@ public class CustomException extends RuntimeException {
         }
     }
 
-    public static class UnauthorizedActionException extends CustomException {
+    /*public static class UnauthorizedActionException extends CustomException {
         public UnauthorizedActionException(String message) {
             super(ErrorMessage.FORBIDDEN.getMessage());
         }
-    }
+    }*/
 }

@@ -31,21 +31,6 @@ public class CourseService {
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
 
-    // 강의 목록 조회
-    public List<CourseResponseDto> getCourses(String sortField, String sortOrder) {
-        // 정렬 조건 생성
-        Sort sort = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        PageRequest pageable = PageRequest.of(0, 3, sort); // 3개 반환
-
-        // 쿼리 실행
-        Page<Course> coursesPage = courseRepository.findAll(pageable);
-
-        // 결과 반환
-        return coursesPage.stream()
-                .map(CourseResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
     // 강의 등록
     @Transactional
     public CourseResponseDto createCourse(CourseRequestDto requestDto) {
@@ -123,6 +108,21 @@ public class CourseService {
         // DTO 변환 후 반환
         return coursesPage.map(CourseResponseDto::new);
     }
+
+    /*// 강의 목록 조회 (항상 상위 * 개의 목록 반환을 위해 사용)
+    public List<CourseResponseDto> getCourses(String sortField, String sortOrder) {
+        // 정렬 조건 생성
+        Sort sort = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        PageRequest pageable = PageRequest.of(0, 3, sort); // 3개 반환 (지정가능)
+
+        // 쿼리 실행
+        Page<Course> coursesPage = courseRepository.findAll(pageable);
+
+        // 결과 반환
+        return coursesPage.stream()
+                .map(CourseResponseDto::new)
+                .collect(Collectors.toList());
+    }*/
 
 
     // 선택 강의 수정
