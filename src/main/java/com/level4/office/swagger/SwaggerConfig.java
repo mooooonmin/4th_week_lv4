@@ -14,7 +14,7 @@ public class SwaggerConfig {
     private static final String SECURITY_SCHEME_NAME = "JWTAuth";
 
     @Bean
-    @Profile("!Prod") // 운영 환경에서 Swagger 비활성화
+    //@Profile("!Prod") // 운영 환경에서 Swagger 비활성화
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes(SECURITY_SCHEME_NAME,
