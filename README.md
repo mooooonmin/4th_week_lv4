@@ -1,5 +1,10 @@
 # 4th_week_lv4
 ---
+## API
+![2024-01-03_17-18-12](https://github.com/mooooonmin/4th_week_lv4/assets/118891828/b37e156f-f958-47c7-bee9-09f035b83620)
+![2024-01-03_17-18-21](https://github.com/mooooonmin/4th_week_lv4/assets/118891828/3f59f49e-0c4c-456e-863c-90ef80c4741b)
+![2024-01-03_17-18-31](https://github.com/mooooonmin/4th_week_lv4/assets/118891828/ffda4fbb-9392-4522-b157-c65e83b0e3bb)
+---
 ## 요구사항 (필구 구현 기능)
 - [ ]  회원 가입 기능
     - `이메일`, `비밀번호`, `성별`, `전화번호`, `주소`, `권한`을 저장할 수 있습니다.
