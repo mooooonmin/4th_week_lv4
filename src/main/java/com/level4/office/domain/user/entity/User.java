@@ -1,21 +1,22 @@
 package com.level4.office.domain.user.entity;
 
-import com.level4.office.domain.user.dto.SignupRequestDto;
+import com.level4.office.domain.comment.entity.Comment;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -24,31 +25,30 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String phoneNumber;
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
 
     @Column(nullable = false, unique = true)
-    private String nickname;
+    private String phoneNumber;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private String address;
 
-    @Builder
-    private User(String email, String password, String phoneNumber, String nickname, UserRole role) {
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments;
+
+    public User(String email, String encodedPassword, Gender gender, String phoneNumber, String address, UserRoleEnum user) {
+
         this.email = email;
-        this.password = password;
+        this.password = encodedPassword;
+        this.gender = gender;
         this.phoneNumber = phoneNumber;
-        this.nickname = nickname;
-        this.role = role;
+        this.address = address;
+        this.role = user;
     }
 
-    public static User from(SignupRequestDto requestDto, String password) {
-        return User.builder()
-                .email(requestDto.getEmail())
-                .password(password)
-                .phoneNumber(requestDto.getPhoneNumber())
-                .nickname(requestDto.getNickname())
-                .role(UserRole.USER)
-                .build();
-    }
 }
