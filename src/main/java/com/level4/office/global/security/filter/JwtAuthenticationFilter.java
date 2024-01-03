@@ -1,12 +1,12 @@
-package com.level4.office.security.filter;
+package com.level4.office.global.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.level4.office.domain.user.dto.LoginRequestDto;
 import com.level4.office.domain.user.entity.UserRoleEnum;
-import com.level4.office.exception.ErrorCode;
+import com.level4.office.global.exception.ErrorCode;
 import com.level4.office.global.dto.SuccessMessageDto;
-import com.level4.office.security.impl.UserDetailsImpl;
-import com.level4.office.security.jwt.JwtUtil;
+import com.level4.office.global.security.impl.UserDetailsImpl;
+import com.level4.office.global.security.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

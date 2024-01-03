@@ -1,9 +1,9 @@
-package com.level4.office.security.filter;
+package com.level4.office.global.security.filter;
 
-import com.level4.office.exception.CustomException;
-import com.level4.office.exception.ErrorCode;
-import com.level4.office.security.impl.UserDetailsServiceImpl;
-import com.level4.office.security.jwt.JwtUtil;
+import com.level4.office.global.exception.CustomException;
+import com.level4.office.global.exception.ErrorCode;
+import com.level4.office.global.security.impl.UserDetailsServiceImpl;
+import com.level4.office.global.security.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

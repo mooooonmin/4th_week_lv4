@@ -1,4 +1,4 @@
-package com.level4.office.security.impl;
+package com.level4.office.global.security.impl;
 
 import com.level4.office.domain.user.entity.User;
 import com.level4.office.domain.user.repository.UserRepository;

@@ -1,12 +1,11 @@
 package com.level4.office.domain.instructor.service;
 
-import com.level4.office.domain.course.repository.CourseRepository;
 import com.level4.office.domain.instructor.dto.InstructorRequestDto;
 import com.level4.office.domain.instructor.dto.InstructorResponseDto;
 import com.level4.office.domain.instructor.entity.Instructor;
 import com.level4.office.domain.instructor.repository.InstructorRepository;
-import com.level4.office.exception.CustomException;
-import com.level4.office.exception.ErrorCode;
+import com.level4.office.global.exception.CustomException;
+import com.level4.office.global.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

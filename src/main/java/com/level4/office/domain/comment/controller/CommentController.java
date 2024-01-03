@@ -4,7 +4,7 @@ import com.level4.office.domain.comment.dto.CommentRequestDto;
 import com.level4.office.domain.comment.service.CommentService;
 import com.level4.office.domain.user.entity.User;
 import com.level4.office.global.dto.SuccessMessageDto;
-import com.level4.office.security.impl.UserDetailsImpl;
+import com.level4.office.global.security.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

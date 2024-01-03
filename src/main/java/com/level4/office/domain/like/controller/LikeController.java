@@ -2,7 +2,7 @@ package com.level4.office.domain.like.controller;
 
 import com.level4.office.domain.like.service.LikeService;
 import com.level4.office.global.dto.SuccessMessageDto;
-import com.level4.office.security.impl.UserDetailsImpl;
+import com.level4.office.global.security.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;

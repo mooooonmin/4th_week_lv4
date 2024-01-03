@@ -1,4 +1,4 @@
-package com.level4.office.exception;
+package com.level4.office.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

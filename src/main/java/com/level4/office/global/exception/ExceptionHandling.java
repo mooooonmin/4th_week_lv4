@@ -1,4 +1,4 @@
-package com.level4.office.exception;
+package com.level4.office.global.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

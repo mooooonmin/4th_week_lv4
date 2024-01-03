@@ -1,7 +1,7 @@
-package com.level4.office.security.jwt;
+package com.level4.office.global.security.jwt;
 
-import com.level4.office.exception.CustomException;
-import com.level4.office.exception.ErrorCode;
+import com.level4.office.global.exception.CustomException;
+import com.level4.office.global.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;

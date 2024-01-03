@@ -1,10 +1,10 @@
 package com.level4.office.global.config;
 
-import com.level4.office.security.filter.JwtAuthenticationFilter;
-import com.level4.office.security.filter.JwtAuthorizationFilter;
-import com.level4.office.security.impl.UserDetailsServiceImpl;
-import com.level4.office.security.jwt.JwtAuthenticationEntryPoint;
-import com.level4.office.security.jwt.JwtUtil;
+import com.level4.office.global.security.filter.JwtAuthenticationFilter;
+import com.level4.office.global.security.filter.JwtAuthorizationFilter;
+import com.level4.office.global.security.impl.UserDetailsServiceImpl;
+import com.level4.office.global.security.jwt.JwtAuthenticationEntryPoint;
+import com.level4.office.global.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
